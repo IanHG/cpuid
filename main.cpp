@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h> /* for uint32_t */
 #include <bitset>
 
 #define cpu_true  1

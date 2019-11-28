@@ -32,8 +32,6 @@ int cpuid
    ,  uint32_t* edx 
    )
 {
-   std::cout << *eax << std::endl;
-
    asm volatile ("cpuid" :
          "=a" (*eax),
          "=b" (*ebx),
@@ -42,8 +40,6 @@ int cpuid
          : "a" (*eax), "c" (*ecx)
          //: "0" (*eax), "2" (*ecx)
       );
-   
-   std::cout << *eax << std::endl;
    
    //if(*eax == 0)
    //{
@@ -127,19 +123,31 @@ int cpu_brand
 /**
  *
  **/
-int cpu_is_avx2()
+int cpu_has_avx2()
 {
    cpuid_reg reg = { 0x7, 0x0, 0x0 };
 
-   std::cout << " CHECK AVX " << std::endl;
+   if(cpuid(&reg) == 0)
+   {
+      if(reg.ebx & (1<<(5)))
+      {
+         return cpu_true;
+      }
+   }
+
+   return cpu_false;
+}
+
+/**
+ *
+ **/
+int cpu_has_avx512()
+{
+   cpuid_reg reg = { 0x7, 0x0, 0x0 };
 
    if(cpuid(&reg) == 0)
    {
-      std::cout << std::bitset<32>(reg.eax) << std::endl;
-      std::cout << std::bitset<32>(reg.ebx) << std::endl;
-      std::cout << std::bitset<32>(reg.ecx) << std::endl;
-      std::cout << std::bitset<32>(reg.edx) << std::endl;
-      if(reg.ebx & (1<<(5)))
+      if(reg.ebx & (1<<(15)))
       {
          return cpu_true;
       }
@@ -165,7 +173,8 @@ int main()
 
    //std::cout << cc << std::endl;
    
-   std::cout << cpu_is_avx2() << std::endl;
+   std::cout << cpu_has_avx2() << std::endl;
+   std::cout << cpu_has_avx512() << std::endl;
    
    char brand[48];
    

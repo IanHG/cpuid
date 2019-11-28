@@ -89,7 +89,7 @@ int cpu_vendor_id
 /**
  *
  **/
-int cpu_brand
+int cpu_model_name
    (  char* c
    ,  int   size
    )
@@ -163,25 +163,16 @@ int cpu_has_avx512()
 int main()
 {
    char c[13];
-   
    cpu_vendor_id(c, sizeof(c));
    c[12] = '\0';
-   
-   std::cout << c << std::endl;
-
-   cpuid_reg ext = { 0x1 };
-   cpuid(&ext);
-
-   //std::cout << cc << std::endl;
    
    std::cout << cpu_has_avx2() << std::endl;
    std::cout << cpu_has_avx512() << std::endl;
    
-   char brand[48];
-   
-   cpu_brand(brand, sizeof(brand));
+   char model_name[48];
+   cpu_model_name(model_name, sizeof(model_name));
 
-   printf("Brand: %s\n", brand);
+   printf("Model name: %s\n", model_name);
 
    return 0;
 }

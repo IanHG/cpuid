@@ -1,4 +1,4 @@
-CXX=g++
+CXX=clang++
 CXXSTD=--std=c++14
 CXXOPTIMFLAGS=-O3 -g
 CXXDEBUGFLAGS=-g -O0 -rdynamic

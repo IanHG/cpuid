@@ -60,6 +60,27 @@ int cpuid
 }
 
 /**
+ *
+ **/
+int cpuid_max
+   (  uint32_t max
+   )
+{
+   cpuid_reg reg = { max & 0x80000000 };
+
+   int status = cpuid(&reg);
+   
+   if(status == 0)
+   {
+      return reg.eax >= max;
+   }
+   else
+   {
+      return 0x0;
+   }
+}
+
+/**
  * Get CPU vendor ID.
  **/
 int cpu_vendor_id
@@ -95,6 +116,11 @@ int cpu_brand
    )
 {
    if(size < 48)
+   {
+      return -1;
+   }
+
+   if(!cpuid_max(0x80000004))
    {
       return -1;
    }
@@ -174,7 +200,7 @@ int main()
 
    //std::cout << cc << std::endl;
    
-   std::cout << cpu_has_avx2() << std::endl;
+   std::cout << cpu_has_avx2()   << std::endl;
    std::cout << cpu_has_avx512() << std::endl;
    
    char brand[48];
